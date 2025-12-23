@@ -12,75 +12,28 @@
   "categories": ["productivity", "reference", "utilities"],
   "icons": [
     {
-      "src": "icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
       "src": "icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Convenio Completo",
-      "short_name": "Convenio",
-      "description": "Ver el convenio completo por capítulos",
-      "url": "./app-completa.html#convenio-completo",
-      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+      "purpose": "any"
     },
     {
-      "name": "Tablas Salariales",
-      "short_name": "Salarios",
-      "description": "Consultar tablas salariales y complementos",
-      "url": "./app-completa.html#tablas-salariales",
-      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
-      "name": "Permisos Retribuidos",
-      "short_name": "Permisos",
-      "description": "Ver permisos retribuidos disponibles",
-      "url": "./app-completa.html#permisos-retribuidos",
-      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
