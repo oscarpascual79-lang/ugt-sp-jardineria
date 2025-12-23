@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGT-SP - Convenio Jardinería 2021-2024</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Aplicación oficial del Convenio Colectivo Estatal de Jardinería 2021-2024 de UGT Servicios Públicos">
+    <meta name="theme-color" content="#c41e3a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="UGT-SP Jardinería">
+    <meta name="msapplication-TileColor" content="#c41e3a">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Iconos para diferentes dispositivos -->
+    <link rel="icon" type="image/svg+xml" href="app-icon.svg">
+    <link rel="apple-touch-icon" href="app-icon.svg">
+    <link rel="mask-icon" href="app-icon.svg" color="#c41e3a">
+    
+    <!-- Preload crítico -->
+    <link rel="preload" as="style" href="data:text/css,*{margin:0;padding:0;box-sizing:border-box}">
+    <style>
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Pantalla de portada */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(
+                135deg,
+                rgba(34, 139, 34, 0.9) 0%,
+                rgba(50, 205, 50, 0.7) 50%,
+                rgba(144, 238, 144, 0.5) 100%
+            );
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .splash-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNjAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCI+CiAgPCEtLSBDaWVsbyBkZWdyYWRhZG8gLS0+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM4N0NFRUIiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6Izk4RkI5OCIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3NreUdyYWRpZW50KSIvPgogIDxyZWN0IHg9IjAiIHk9IjMwMCIgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMyMjhCMjIiLz4KICA8IS0tIMOBcmJvbGVzIC0tPgogIDxyZWN0IHg9IjUwIiB5PSIyMjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjgwIiBmaWxsPSIjOEI0NTEzIi8+CiAgPGNpcmNsZSBjeD0iNTQiIGN5PSIyMTAiIHI9IjI1IiBmaWxsPSIjMzJDRDMyIi8+CiAgPHJlY3QgeD0iMTIwIiB5PSIyMDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiM4QjQ1MTMiLz4KICA8Y2lyY2xlIGN4PSIxMjUiIGN5PSIxOTAiIHI9IjMwIiBmaWxsPSIjMzJDRDMyIi8+CiAgPHJlY3QgeD0iMjgwIiB5PSIxODAiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMjAiIGZpbGw9IiM4QjQ1MTMiLz4KICA8Y2lyY2xlIGN4PSIyODYiIGN5PSIxNzAiIHI9IjM1IiBmaWxsPSIjMzJDRDMyIi8+Cjwvc3ZnPg==');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 350px;
+            width: 100%;
+            padding: 2rem;
+        }
+        .main-title {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .union-text {
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
+        }
+
+        .convenio-info {
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 1s both;
+        }
+
+        .convenio-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.2;
+        }
+
+        .convenio-years {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            letter-spacing: 0.1em;
+        }
+
+        .enter-button {
+            background: linear-gradient(135deg, #c41e3a, #e53e3e);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 1.5s both;
+            min-width: 200px;
+            margin: 0 auto;
+        }
+
+        .enter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.6);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Aplicación principal */
+        .main-app {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .main-app.active {
+            display: block;
+        }
+        /* Header */
+        .app-header {
+            background: linear-gradient(135deg, #c41e3a, #e53e3e);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: auto;
+        }
+
+        .header-text h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .header-text span {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Navegación */
+        .app-nav {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 80px;
+            z-index: 99;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-item:hover {
+            background-color: #f8f9fa;
+            color: #c41e3a;
+        }
+
+        .nav-item.active {
+            color: #c41e3a;
+            border-bottom-color: #c41e3a;
+            background-color: #f8f9fa;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Contenido principal */
+        .app-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .app-section {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .app-section.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section-logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            color: #c41e3a;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        /* Acordeón */
+        .accordion-item {
+            margin-bottom: 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .accordion-header {
+            background: linear-gradient(135deg, #c41e3a, #e53e3e);
+            color: white;
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #d41e3a, #f53e3e);
+        }
+
+        .accordion-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .accordion-icon {
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background-color: white;
+        }
+
+        .accordion-content.active {
+            max-height: 2000px;
+            padding: 2rem;
+        }
+
+        .chapter-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #c41e3a;
+        }
+
+        .chapter-logo-img {
+            width: 80px;
+            height: auto;
+        }
+
+        .accordion-content article {
+            margin-bottom: 2rem;
+        }
+
+        .accordion-content h4 {
+            color: #c41e3a;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+
+        .accordion-content h5 {
+            color: #c41e3a;
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.8rem 0;
+            font-weight: 600;
+        }
+
+        .grupo-profesional {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #c41e3a;
+        }
+
+        /* Tablas salariales */
+        .salary-container h3 {
+            color: #c41e3a;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .salary-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #c41e3a;
+        }
+
+        .salary-card h4 {
+            color: #c41e3a;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .salary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .salary-item:last-child {
+            border-bottom: none;
+        }
+
+        .salary-item span {
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .salary-item strong {
+            color: #c41e3a;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        /* Permisos */
+        .permiso-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #c41e3a;
+            transition: transform 0.2s ease;
+        }
+
+        .permiso-card:hover {
+            transform: translateX(5px);
+        }
+
+        .permiso-card h4 {
+            color: #c41e3a;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .permiso-detail {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .permiso-detail strong {
+            color: #c41e3a;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .app-footer {
+            background: #c41e3a;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            width: 80px;
+            height: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3rem;
+            }
+            
+            .convenio-title {
+                font-size: 1.5rem;
+            }
+            
+            .convenio-years {
+                font-size: 2rem;
+            }
+            
+            .app-header {
+                padding: 1rem;
+            }
+            
+            .header-text h1 {
+                font-size: 1.2rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-item {
+                padding: 1rem;
+                border-bottom: 1px solid #e9ecef;
+                border-right: none;
+                justify-content: center;
+            }
+            
+            .nav-item.active {
+                border-bottom: 1px solid #c41e3a;
+                border-left: 4px solid #c41e3a;
+            }
+            
+            .app-main {
+                padding: 1rem;
+            }
+            
+            .app-section {
+                padding: 1rem;
+            }
+            
+            .accordion-header h3 {
+                font-size: 1rem;
+            }
+            
+            .salary-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .splash-content {
+                padding: 1rem;
+            }
+            
+            .accordion-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de portada -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-background"></div>
+        <div class="splash-content">
+            <div class="logo-container">
+                <h1 class="main-title">UGT-SP</h1>
+                <div class="subtitle">SERVICIOS PÚBLICOS</div>
+                <div class="union-text">UNIÓN GENERAL DE TRABAJADORES</div>
+            </div>
+            
+            <div class="convenio-info">
+                <h2 class="convenio-title">CONVENIO ESTATAL DE JARDINERÍA</h2>
+                <div class="convenio-years">2021-2024</div>
+            </div>
+            
+            <button class="enter-button" onclick="enterApp()">
+                <span>ENTRAR A LA APP</span>
+                <div>→</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Aplicación principal -->
+    <div id="main-app" class="main-app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <svg width="50" height="30" viewBox="0 0 300 120" class="header-logo">
+                    <rect width="300" height="120" fill="#c41e3a" rx="8"/>
+                    <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">SP</text>
+                    <line x1="80" y1="20" x2="80" y2="60" stroke="white" stroke-width="3"/>
+                    <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">UGT</text>
+                    <text x="30" y="75" font-family="Arial" font-size="12" fill="white">SERVICIOS PÚBLICOS</text>
+                    <text x="30" y="95" font-family="Arial" font-size="12" fill="white">UNIÓN GENERAL DE TRABAJADORES</text>
+                </svg>
+                <div class="header-text">
+                    <h1>Convenio Jardinería</h1>
+                    <span>2021-2024</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navegación -->
+        <nav class="app-nav">
+            <div class="nav-container">
+                <button class="nav-item active" onclick="showSection('convenio-completo')">
+                    <span class="nav-icon">📋</span>
+                    <span>Convenio Completo</span>
+                </button>
+                <button class="nav-item" onclick="showSection('tablas-salariales')">
+                    <span class="nav-icon">💰</span>
+                    <span>Tablas Salariales</span>
+                </button>
+                <button class="nav-item" onclick="showSection('permisos-retribuidos')">
+                    <span class="nav-icon">🏖️</span>
+                    <span>Permisos Retribuidos</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="app-main">
+            <!-- Convenio Completo -->
+            <section id="convenio-completo" class="app-section active">
+                <div class="section-header">
+                    <svg width="100" height="60" viewBox="0 0 300 120" class="section-logo">
+                        <rect width="300" height="120" fill="#c41e3a" rx="8"/>
+                        <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">SP</text>
+                        <line x1="80" y1="20" x2="80" y2="60" stroke="white" stroke-width="3"/>
+                        <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">UGT</text>
+                        <text x="30" y="75" font-family="Arial" font-size="12" fill="white">SERVICIOS PÚBLICOS</text>
+                        <text x="30" y="95" font-family="Arial" font-size="12" fill="white">UNIÓN GENERAL DE TRABAJADORES</text>
+                    </svg>
+                    <h2>Convenio Completo</h2>
+                </div>
+                
+                <p style="text-align: center; color: #666; font-style: italic; margin-bottom: 2rem; padding: 1rem; background-color: #f8f9fa; border-radius: 8px;">
+                    Haz clic en cada capítulo para ver su contenido completo
+                </p>
+                <!-- Capítulo I -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion('capitulo1')">
+                        <h3>CAPÍTULO I - DISPOSICIONES GENERALES</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div id="capitulo1" class="accordion-content">
+                        <div class="chapter-logo">
+                            <svg width="80" height="48" viewBox="0 0 300 120" class="chapter-logo-img">
+                                <rect width="300" height="120" fill="#c41e3a" rx="8"/>
+                                <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">SP</text>
+                                <line x1="80" y1="20" x2="80" y2="60" stroke="white" stroke-width="3"/>
+                                <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">UGT</text>
+                                <text x="30" y="75" font-family="Arial" font-size="12" fill="white">SERVICIOS PÚBLICOS</text>
+                                <text x="30" y="95" font-family="Arial" font-size="12" fill="white">UNIÓN GENERAL DE TRABAJADORES</text>
+                            </svg>
+                        </div>
+                        <article>
+                            <h4>Artículo 1. Ámbito funcional</h4>
+                            <p>El presente Convenio será de aplicación a las empresas dedicadas a las actividades de jardinería, paisajismo y conservación de zonas verdes, incluyendo:</p>
+                            <ul>
+                                <li>Diseño, construcción y mantenimiento de jardines públicos y privados</li>
+                                <li>Instalación y mantenimiento de sistemas de riego</li>
+                                <li>Poda y tratamiento de árboles y arbustos</li>
+                                <li>Aplicación de productos fitosanitarios</li>
+                                <li>Mantenimiento de césped y praderas</li>
+                                <li>Construcción de elementos de jardinería (pérgolas, caminos, etc.)</li>
+                                <li>Servicios de paisajismo y diseño de espacios verdes</li>
+                            </ul>
+                        </article>
+                        
+                        <article>
+                            <h4>Artículo 2. Ámbito territorial</h4>
+                            <p>Este Convenio será de aplicación en todo el territorio nacional, incluyendo las ciudades autónomas de Ceuta y Melilla, sin perjuicio de las competencias que correspondan a las Comunidades Autónomas en materia laboral.</p>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 3. Ámbito temporal</h4>
+                            <p>El presente Convenio tendrá vigencia desde el 1 de enero de 2021 hasta el 31 de diciembre de 2024, prorrogándose automáticamente por períodos anuales si no mediara denuncia expresa por cualquiera de las partes con una antelación mínima de tres meses a la fecha de vencimiento.</p>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 4. Denuncia del Convenio</h4>
+                            <p>Cualquiera de las partes firmantes podrá denunciar el presente Convenio mediante comunicación escrita dirigida a la otra parte, con una antelación mínima de tres meses a la fecha de vencimiento o de cualquiera de sus prórrogas.</p>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 5. Vinculación a la totalidad</h4>
+                            <p>Las condiciones pactadas en el presente Convenio forman un todo orgánico e indivisible y a efectos de su aplicación práctica serán consideradas globalmente.</p>
+                        </article>
+                    </div>
+                </div>
+                <!-- Capítulo II -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion('capitulo2')">
+                        <h3>CAPÍTULO II - CLASIFICACIÓN PROFESIONAL</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div id="capitulo2" class="accordion-content">
+                        <div class="chapter-logo">
+                            <svg width="80" height="48" viewBox="0 0 300 120" class="chapter-logo-img">
+                                <rect width="300" height="120" fill="#c41e3a" rx="8"/>
+                                <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">SP</text>
+                                <line x1="80" y1="20" x2="80" y2="60" stroke="white" stroke-width="3"/>
+                                <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">UGT</text>
+                                <text x="30" y="75" font-family="Arial" font-size="12" fill="white">SERVICIOS PÚBLICOS</text>
+                                <text x="30" y="95" font-family="Arial" font-size="12" fill="white">UNIÓN GENERAL DE TRABAJADORES</text>
+                            </svg>
+                        </div>
+                        <article>
+                            <h4>Artículo 6. Grupos profesionales</h4>
+                            <p>Los trabajadores se clasifican en los siguientes grupos profesionales:</p>
+                            
+                            <div class="grupo-profesional">
+                                <h5>GRUPO I - Personal directivo y técnico superior</h5>
+                                <ul>
+                                    <li><strong>Director Técnico:</strong> Profesional con titulación superior que dirige y coordina los trabajos técnicos de la empresa</li>
+                                    <li><strong>Ingeniero/Arquitecto:</strong> Profesional con titulación superior universitaria en ingeniería o arquitectura</li>
+                                    <li><strong>Ingeniero Técnico:</strong> Profesional con titulación de grado medio en ingeniería</li>
+                                </ul>
+                            </div>
+
+                            <div class="grupo-profesional">
+                                <h5>GRUPO II - Personal técnico medio</h5>
+                                <ul>
+                                    <li><strong>Técnico Superior:</strong> Profesional con formación técnica especializada</li>
+                                    <li><strong>Encargado General:</strong> Responsable de la coordinación y supervisión de equipos de trabajo</li>
+                                    <li><strong>Capataz:</strong> Responsable directo de un grupo de trabajadores en obra</li>
+                                </ul>
+                            </div>
+
+                            <div class="grupo-profesional">
+                                <h5>GRUPO III - Personal administrativo</h5>
+                                <ul>
+                                    <li><strong>Jefe Administrativo:</strong> Responsable del área administrativa</li>
+                                    <li><strong>Administrativo:</strong> Empleado con funciones administrativas generales</li>
+                                    <li><strong>Auxiliar Administrativo:</strong> Empleado con funciones administrativas básicas</li>
+                                </ul>
+                            </div>
+
+                            <div class="grupo-profesional">
+                                <h5>GRUPO IV - Personal especializado</h5>
+                                <ul>
+                                    <li><strong>Oficial Jardinero:</strong> Trabajador especializado en labores de jardinería</li>
+                                    <li><strong>Conductor:</strong> Trabajador especializado en conducción de vehículos</li>
+                                    <li><strong>Operario Especializado:</strong> Trabajador con conocimientos específicos en su área</li>
+                                    <li><strong>Oficial de Mantenimiento:</strong> Especialista en mantenimiento de equipos e instalaciones</li>
+                                </ul>
+                            </div>
+
+                            <div class="grupo-profesional">
+                                <h5>GRUPO V - Personal no especializado</h5>
+                                <ul>
+                                    <li><strong>Peón Especializado:</strong> Trabajador con cierta experiencia en labores básicas</li>
+                                    <li><strong>Peón Ordinario:</strong> Trabajador sin especialización específica</li>
+                                </ul>
+                            </div>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 7. Movilidad funcional</h4>
+                            <p>La movilidad funcional se realizará de acuerdo con las titulaciones académicas o profesionales precisas para ejercer la prestación laboral y con respeto a la dignidad del trabajador.</p>
+                        </article>
+                    </div>
+                </div>
+                <!-- Capítulo III -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion('capitulo3')">
+                        <h3>CAPÍTULO III - JORNADA LABORAL</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div id="capitulo3" class="accordion-content">
+                        <div class="chapter-logo">
+                            <svg width="80" height="48" viewBox="0 0 300 120" class="chapter-logo-img">
+                                <rect width="300" height="120" fill="#c41e3a" rx="8"/>
+                                <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">SP</text>
+                                <line x1="80" y1="20" x2="80" y2="60" stroke="white" stroke-width="3"/>
+                                <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">UGT</text>
+                                <text x="30" y="75" font-family="Arial" font-size="12" fill="white">SERVICIOS PÚBLICOS</text>
+                                <text x="30" y="95" font-family="Arial" font-size="12" fill="white">UNIÓN GENERAL DE TRABAJADORES</text>
+                            </svg>
+                        </div>
+                        <article>
+                            <h4>Artículo 8. Jornada ordinaria</h4>
+                            <p>La jornada ordinaria de trabajo será de 40 horas semanales en cómputo anual, distribuidas de lunes a viernes. La distribución irregular de la jornada se realizará respetando en todo caso los períodos mínimos de descanso diario y semanal previstos en la legislación vigente.</p>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 9. Horarios</h4>
+                            <p>El horario de trabajo se establecerá entre las 7:00 y las 19:00 horas, con una pausa mínima de 30 minutos para el almuerzo que no computará como tiempo de trabajo efectivo. En trabajos de temporada o por necesidades del servicio, podrá modificarse este horario previo acuerdo con los representantes de los trabajadores.</p>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 10. Horas extraordinarias</h4>
+                            <p>Las horas extraordinarias serán voluntarias, salvo en los casos previstos en el artículo 35.3 del Estatuto de los Trabajadores. Su número no podrá ser superior a 80 al año. Se abonarán con un incremento del 75% sobre el valor de la hora ordinaria o se compensarán con descanso equivalente.</p>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 11. Trabajo nocturno</h4>
+                            <p>Se considera trabajo nocturno el realizado entre las 22:00 y las 6:00 horas. Los trabajadores nocturnos no podrán realizar más de 8 horas de trabajo nocturno en un período de 24 horas y percibirán un plus del 25% sobre su salario base.</p>
+                        </article>
+
+                        <article>
+                            <h4>Artículo 12. Descansos</h4>
+                            <p>Los trabajadores tendrán derecho a un descanso mínimo semanal de día y medio ininterrumpido que, como regla general, comprenderá la tarde del sábado o la mañana del lunes y el domingo completo.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <!-- Tablas Salariales -->
+            <section id="tablas-salariales" class="app-section">
+                <div class="section-header">
+                    <svg width="100" height="60" viewBox="0 0 300 120" class="section-logo">
+                        <rect width="300" height="120" fill="#c41e3a" rx="8"/>
+                        <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">SP</text>
+                        <line x1="80" y1="20" x2="80" y2="60" stroke="white" stroke-width="3"/>
+                        <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">UGT</text>
+                        <text x="30" y="75" font-family="Arial" font-size="12" fill="white">SERVICIOS PÚBLICOS</text>
+                        <text x="30" y="95" font-family="Arial" font-size="12" fill="white">UNIÓN GENERAL DE TRABAJADORES</text>
+                    </svg>
+                    <h2>Tablas Salariales</h2>
+                </div>
+                
+                <div class="salary-container">
+                    <h3>Salarios Base Mensuales 2021</h3>
+                    
+                    <div class="salary-card">
+                        <h4>GRUPO I - Personal Directivo y Técnico Superior</h4>
+                        <div class="salary-item">
+                            <span>Director Técnico</span>
+                            <strong>2.850,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Ingeniero/Arquitecto</span>
+                            <strong>2.650,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Ingeniero Técnico</span>
+                            <strong>2.400,00€</strong>
+                        </div>
+                    </div>
+
+                    <div class="salary-card">
+                        <h4>GRUPO II - Personal Técnico Medio</h4>
+                        <div class="salary-item">
+                            <span>Técnico Superior</span>
+                            <strong>2.200,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Encargado General</span>
+                            <strong>2.000,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Capataz</span>
+                            <strong>1.850,00€</strong>
+                        </div>
+                    </div>
+
+                    <div class="salary-card">
+                        <h4>GRUPO III - Personal Administrativo</h4>
+                        <div class="salary-item">
+                            <span>Jefe Administrativo</span>
+                            <strong>1.900,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Administrativo</span>
+                            <strong>1.800,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Auxiliar Administrativo</span>
+                            <strong>1.600,00€</strong>
+                        </div>
+                    </div>
+
+                    <div class="salary-card">
+                        <h4>GRUPO IV - Personal Especializado</h4>
+                        <div class="salary-item">
+                            <span>Oficial Jardinero</span>
+                            <strong>1.500,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Conductor</span>
+                            <strong>1.450,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Operario Especializado</span>
+                            <strong>1.400,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Oficial de Mantenimiento</span>
+                            <strong>1.480,00€</strong>
+                        </div>
+                    </div>
+
+                    <div class="salary-card">
+                        <h4>GRUPO V - Personal No Especializado</h4>
+                        <div class="salary-item">
+                            <span>Peón Especializado</span>
+                            <strong>1.200,00€</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Peón Ordinario</span>
+                            <strong>1.100,00€</strong>
+                        </div>
+                    </div>
+
+                    <div class="salary-card" style="background: #f8f9fa; border-left: 4px solid #c41e3a;">
+                        <h4>Complementos Salariales</h4>
+                        <div class="salary-item">
+                            <span>Plus de transporte</span>
+                            <strong>120€/mes</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Plus de nocturnidad (22:00-06:00)</span>
+                            <strong>25% sobre salario base</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Plus de festividad</span>
+                            <strong>50% sobre salario base</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Plus de peligrosidad (fitosanitarios)</span>
+                            <strong>180€/mes</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Antigüedad (cada trienio)</span>
+                            <strong>5% hasta máximo 35%</strong>
+                        </div>
+                    </div>
+
+                    <div class="salary-card" style="background: #e8f5e8; border-left: 4px solid #28a745;">
+                        <h4>Incrementos Anuales Aplicados</h4>
+                        <div class="salary-item">
+                            <span>Año 2022</span>
+                            <strong>+2,5% (IPC 2,0% + 0,5% mejora)</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Año 2023</span>
+                            <strong>+3,0% (IPC 2,5% + 0,5% mejora)</strong>
+                        </div>
+                        <div class="salary-item">
+                            <span>Año 2024</span>
+                            <strong>+2,8% (IPC 2,3% + 0,5% mejora)</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Permisos Retribuidos -->
+            <section id="permisos-retribuidos" class="app-section">
+                <div class="section-header">
+                    <svg width="100" height="60" viewBox="0 0 300 120" class="section-logo">
+                        <rect width="300" height="120" fill="#c41e3a" rx="8"/>
+                        <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">SP</text>
+                        <line x1="80" y1="20" x2="80" y2="60" stroke="white" stroke-width="3"/>
+                        <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="white">UGT</text>
+                        <text x="30" y="75" font-family="Arial" font-size="12" fill="white">SERVICIOS PÚBLICOS</text>
+                        <text x="30" y="95" font-family="Arial" font-size="12" fill="white">UNIÓN GENERAL DE TRABAJADORES</text>
+                    </svg>
+                    <h2>Permisos Retribuidos</h2>
+                </div>
+                
+                <div class="permisos-container">
+                    <h3 style="color: #c41e3a; font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #c41e3a; padding-bottom: 0.5rem;">Permisos por Motivos Familiares</h3>
+                    
+                    <div class="permiso-card">
+                        <h4>🎊 Matrimonio o pareja de hecho</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> 15 días naturales
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Condiciones:</strong> Debe disfrutarse de forma consecutiva. Se puede ampliar con días de vacaciones.
+                        </div>
+                    </div>
+
+                    <div class="permiso-card">
+                        <h4>👶 Nacimiento, adopción o acogimiento</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> 2 días (4 días si requiere desplazamiento)
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Condiciones:</strong> Ampliable a 4 días en caso de parto múltiple. Desplazamiento superior a 200 km.
+                        </div>
+                    </div>
+
+                    <div class="permiso-card">
+                        <h4>⚰️ Fallecimiento de familiares</h4>
+                        <div class="permiso-detail">
+                            <strong>Cónyuge, hijos, padres:</strong> 3 días (5 días con desplazamiento)
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Hermanos, abuelos, nietos:</strong> 2 días (4 días con desplazamiento)
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Condiciones:</strong> Desplazamiento superior a 200 km
+                        </div>
+                    </div>
+
+                    <div class="permiso-card">
+                        <h4>🏥 Enfermedad grave de familiares</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> 2 días (4 días con desplazamiento)
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Familiares:</strong> Cónyuge, hijos, padres, hermanos
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Condiciones:</strong> Requiere certificado médico
+                        </div>
+                    </div>
+
+                    <h3 style="color: #c41e3a; font-size: 1.5rem; margin: 2rem 0 1rem 0; border-bottom: 2px solid #c41e3a; padding-bottom: 0.5rem;">Permisos por Motivos Personales</h3>
+
+                    <div class="permiso-card">
+                        <h4>🏠 Traslado de domicilio</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> 1 día
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Condiciones:</strong> Justificación documental del cambio de domicilio
+                        </div>
+                    </div>
+
+                    <div class="permiso-card">
+                        <h4>⚖️ Deberes inexcusables</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> El tiempo indispensable
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Ejemplos:</strong> Comparecencias judiciales, exámenes oficiales, renovación DNI, citas médicas ineludibles
+                        </div>
+                    </div>
+
+                    <div class="permiso-card">
+                        <h4>🏛️ Funciones sindicales</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> Según legislación vigente
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Condiciones:</strong> Comunicación previa a la empresa
+                        </div>
+                    </div>
+
+                    <h3 style="color: #c41e3a; font-size: 1.5rem; margin: 2rem 0 1rem 0; border-bottom: 2px solid #c41e3a; padding-bottom: 0.5rem;">Permisos Especiales</h3>
+
+                    <div class="permiso-card">
+                        <h4>🍼 Lactancia</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> 1 hora diaria hasta los 9 meses del menor
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Modalidades:</strong> Fraccionable en dos períodos de 30 minutos o reducción de jornada en 30 minutos
+                        </div>
+                    </div>
+
+                    <div class="permiso-card">
+                        <h4>🩺 Consulta médica</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> El tiempo necesario
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Condiciones:</strong> Preferentemente en horario no laboral. Justificante médico obligatorio
+                        </div>
+                    </div>
+
+                    <div class="permiso-card">
+                        <h4>👨‍⚕️ Acompañamiento médico</h4>
+                        <div class="permiso-detail">
+                            <strong>Duración:</strong> Hasta 4 horas
+                        </div>
+                        <div class="permiso-detail">
+                            <strong>Familiares:</strong> Hijos menores de 16 años, mayores de 65 años o personas con discapacidad
+                        </div>
+                    </div>
+
+                    <div class="permiso-card" style="background: #e8f5e8; border-left: 4px solid #28a745;">
+                        <h4>📋 Condiciones Generales</h4>
+                        <div class="permiso-detail">
+                            • Todos los permisos requieren comunicación previa, salvo casos de urgencia
+                        </div>
+                        <div class="permiso-detail">
+                            • La justificación documental es obligatoria en un plazo máximo de 3 días
+                        </div>
+                        <div class="permiso-detail">
+                            • Los permisos no disfrutados no son acumulables ni compensables económicamente
+                        </div>
+                        <div class="permiso-detail">
+                            • En caso de coincidencia con días festivos, no se amplía la duración del permiso
+                        </div>
+                        <div class="permiso-detail">
+                            • Los desplazamientos se consideran cuando la distancia supera los 200 kilómetros
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <svg width="80" height="48" viewBox="0 0 300 120" class="footer-logo">
+                    <rect width="300" height="120" fill="white" rx="8"/>
+                    <text x="30" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="#c41e3a">SP</text>
+                    <line x1="80" y1="20" x2="80" y2="60" stroke="#c41e3a" stroke-width="3"/>
+                    <text x="95" y="45" font-family="Arial" font-size="28" font-weight="bold" fill="#c41e3a">UGT</text>
+                    <text x="30" y="75" font-family="Arial" font-size="12" fill="#c41e3a">SERVICIOS PÚBLICOS</text>
+                    <text x="30" y="95" font-family="Arial" font-size="12" fill="#c41e3a">UNIÓN GENERAL DE TRABAJADORES</text>
+                </svg>
+                <p>&copy; 2024 UGT-SP - Convenio Colectivo Estatal de Jardinería 2021-2024</p>
+                <p>Esta aplicación es una herramienta de consulta. Para información oficial, consulte el BOE correspondiente.</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        // Variables globales
+        let currentSection = 'convenio-completo';
+        let deferredPrompt;
+        let isInstalled = false;
+
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registrado con éxito:', registration.scope);
+                        
+                        // Verificar actualizaciones
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    showUpdateNotification();
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Error al registrar Service Worker:', error);
+                    });
+            });
+        }
+
+        // Detectar si la app ya está instalada
+        window.addEventListener('appinstalled', function(e) {
+            console.log('PWA instalada con éxito');
+            isInstalled = true;
+            hideInstallButton();
+        });
+
+        // Capturar el evento beforeinstallprompt
+        window.addEventListener('beforeinstallprompt', function(e) {
+            console.log('beforeinstallprompt disparado');
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallButton();
+        });
+
+        // Función para mostrar botón de instalación
+        function showInstallButton() {
+            if (isInstalled) return;
+            
+            const installButton = document.createElement('button');
+            installButton.id = 'install-button';
+            installButton.innerHTML = '📱 Instalar App';
+            installButton.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #c41e3a, #e53e3e);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
+                z-index: 1000;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            `;
+            
+            installButton.addEventListener('click', installApp);
+            installButton.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 6px 20px rgba(196, 30, 58, 0.6)';
+            });
+            installButton.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 4px 15px rgba(196, 30, 58, 0.4)';
+            });
+            
+            document.body.appendChild(installButton);
+        }
+
+        // Función para ocultar botón de instalación
+        function hideInstallButton() {
+            const installButton = document.getElementById('install-button');
+            if (installButton) {
+                installButton.remove();
+            }
+        }
+
+        // Función para instalar la app
+        async function installApp() {
+            if (!deferredPrompt) {
+                showToast('La instalación no está disponible en este navegador');
+                return;
+            }
+
+            const result = await deferredPrompt.prompt();
+            console.log('Resultado de instalación:', result);
+
+            if (result.outcome === 'accepted') {
+                console.log('Usuario aceptó la instalación');
+                showToast('¡App instalada correctamente! 🎉');
+                hideInstallButton();
+            } else {
+                console.log('Usuario rechazó la instalación');
+                showToast('Instalación cancelada');
+            }
+
+            deferredPrompt = null;
+        }
+
+        // Función para mostrar notificación de actualización
+        function showUpdateNotification() {
+            const updateBanner = document.createElement('div');
+            updateBanner.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: #c41e3a;
+                color: white;
+                padding: 12px;
+                text-align: center;
+                z-index: 1001;
+                font-weight: 600;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            `;
+            updateBanner.innerHTML = `
+                Nueva versión disponible 
+                <button onclick="updateApp()" style="background: white; color: #c41e3a; border: none; padding: 4px 12px; border-radius: 4px; margin-left: 10px; cursor: pointer; font-weight: 600;">
+                    Actualizar
+                </button>
+                <button onclick="this.parentElement.remove()" style="background: none; color: white; border: 1px solid white; padding: 4px 12px; border-radius: 4px; margin-left: 5px; cursor: pointer;">
+                    Después
+                </button>
+            `;
+            document.body.appendChild(updateBanner);
+        }
+
+        // Función para actualizar la app
+        function updateApp() {
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+            }
+            window.location.reload();
+        }
+
+        // Función para mostrar toast
+        function showToast(message, duration = 3000) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                z-index: 1002;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                animation: slideUp 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideDown 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // Función para entrar a la aplicación desde la portada
+        function enterApp() {
+            const splashScreen = document.getElementById('splash-screen');
+            const mainApp = document.getElementById('main-app');
+            
+            splashScreen.classList.add('hidden');
+            
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                mainApp.classList.add('active');
+            }, 500);
+        }
+
+        // Función para mostrar secciones
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.app-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remover clase active de todos los botones de navegación
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Marcar el botón de navegación como activo
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Actualizar sección actual
+            currentSection = sectionId;
+            
+            // Scroll al top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Función para el acordeón
+        function toggleAccordion(contentId) {
+            const content = document.getElementById(contentId);
+            const header = content.previousElementSibling;
+            const icon = header.querySelector('.accordion-icon');
+            
+            // Cerrar todos los otros acordeones
+            const allContents = document.querySelectorAll('.accordion-content');
+            const allIcons = document.querySelectorAll('.accordion-icon');
+            
+            allContents.forEach((item, index) => {
+                if (item.id !== contentId) {
+                    item.classList.remove('active');
+                    allIcons[index].textContent = '+';
+                    allIcons[index].style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Toggle del acordeón actual
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                icon.textContent = '+';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('active');
+                icon.textContent = '−';
+                icon.style.transform = 'rotate(180deg)';
+                
+                // Scroll suave al contenido
+                setTimeout(() => {
+                    content.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest' 
+                    });
+                }, 300);
+            }
+        }
+
+        // Función para calcular salario
+        function calculateSalary() {
+            // Crear modal de calculadora
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                padding: 1rem;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 12px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto;">
+                    <div style="background: #c41e3a; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; border-radius: 12px 12px 0 0;">
+                        <h3 style="margin: 0;">Calculadora de Salario</h3>
+                        <button onclick="closeCalculator()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #c41e3a;">Salario Base (€)</label>
+                            <input type="number" id="base-salary" placeholder="1500" style="width: 100%; padding: 0.8rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem;" />
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #c41e3a;">Antigüedad (%)</label>
+                            <input type="number" id="antiquity" placeholder="0" max="35" style="width: 100%; padding: 0.8rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem;" />
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="night-shift" />
+                                Plus Nocturnidad (+25%)
+                            </label>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="holiday" />
+                                Plus Festividad (+50%)
+                            </label>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="danger" />
+                                Plus Peligrosidad (+180€)
+                            </label>
+                        </div>
+                        <button onclick="calculateResult()" style="width: 100%; background: #c41e3a; color: white; border: none; padding: 1rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-bottom: 1rem;">Calcular</button>
+                        <div id="result" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; font-weight: 600; color: #c41e3a;"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            window.currentModal = modal;
+        }
+
+        function calculateResult() {
+            const baseSalary = parseFloat(document.getElementById('base-salary').value) || 0;
+            const antiquity = parseFloat(document.getElementById('antiquity').value) || 0;
+            const nightShift = document.getElementById('night-shift').checked;
+            const holiday = document.getElementById('holiday').checked;
+            const danger = document.getElementById('danger').checked;
+            
+            let totalSalary = baseSalary;
+            
+            // Plus de transporte
+            totalSalary += 120;
+            
+            // Antigüedad
+            totalSalary += baseSalary * (antiquity / 100);
+            
+            // Plus de nocturnidad
+            if (nightShift) {
+                totalSalary += baseSalary * 0.25;
+            }
+            
+            // Plus de festividad
+            if (holiday) {
+                totalSalary += baseSalary * 0.50;
+            }
+            
+            // Plus de peligrosidad
+            if (danger) {
+                totalSalary += 180;
+            }
+            
+            document.getElementById('result').innerHTML = `
+                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">
+                    Salario Total: <strong>${totalSalary.toFixed(2)}€</strong>
+                </div>
+                <div style="font-size: 0.9rem; opacity: 0.8;">
+                    Incluye plus de transporte (120€)
+                </div>
+            `;
+        }
+
+        function closeCalculator() {
+            if (window.currentModal) {
+                window.currentModal.remove();
+                window.currentModal = null;
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-mostrar portada por 3 segundos
+            setTimeout(() => {
+                const splashScreen = document.getElementById('splash-screen');
+                if (splashScreen && !splashScreen.classList.contains('hidden')) {
+                    const hint = document.createElement('div');
+                    hint.textContent = 'Toca para continuar';
+                    hint.style.cssText = `
+                        position: absolute;
+                        bottom: 2rem;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        color: white;
+                        font-size: 0.9rem;
+                        opacity: 0.8;
+                        animation: pulse 2s infinite;
+                    `;
+                    document.querySelector('.splash-content').appendChild(hint);
+                }
+            }, 3000);
+
+            // Atajos de teclado
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key >= '1' && e.key <= '3') {
+                    e.preventDefault();
+                    const sections = ['convenio-completo', 'tablas-salariales', 'permisos-retribuidos'];
+                    const sectionIndex = parseInt(e.key) - 1;
+                    if (sections[sectionIndex]) {
+                        showSection(sections[sectionIndex]);
+                    }
+                }
+                
+                if (e.key === 'Escape' && window.currentModal) {
+                    closeCalculator();
+                }
+            });
+
+            // Cerrar modal al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (window.currentModal && e.target === window.currentModal) {
+                    closeCalculator();
+                }
+            });
+        });
+
+        // Añadir animación pulse
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { opacity: 0.8; }
+                50% { opacity: 0.4; }
+                100% { opacity: 0.8; }
+            }
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+            }
+            @keyframes slideDown {
+                from {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(20px);
+                }
+            }
+            /* Estilos para modo standalone */
+            @media (display-mode: standalone) {
+                .app-header {
+                    padding-top: max(1rem, env(safe-area-inset-top));
+                }
+                body {
+                    padding-bottom: env(safe-area-inset-bottom, 0);
+                }
+            }
+            #install-button {
+                animation: pulse 2s infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
